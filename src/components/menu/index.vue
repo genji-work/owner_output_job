@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="menu">
     <div class="gen-box">
       <div class="gen-item">
         <i />
@@ -38,6 +38,6 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "./index.scss";
 </style>

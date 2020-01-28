@@ -13,11 +13,14 @@ export const intercept = router => {
     } = to;
     if (!white_list.includes(path)) {
       if (!db_list.includes(q)) {
+        document.title = "北京师范大学-国际与比较教育研究院";
         next("/");
       } else {
+        document.title = q;
         next();
       }
     } else {
+      document.title = "北京师范大学-国际与比较教育研究院";
       next();
     }
   });

@@ -3,6 +3,7 @@ import Router from "vue-router";
 
 import login from "../components/login";
 import menu from "../components/menu";
+import home from "../components/home";
 
 Vue.use(Router);
 
@@ -19,6 +20,12 @@ export default new Router({
       path: "/",
       name: "menu",
       component: menu
+    },
+    {
+      path: "/home",
+      name: home,
+      component: home,
+      children: []
     }
   ]
 });

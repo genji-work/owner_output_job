@@ -48,7 +48,9 @@ export default {
   },
   created() {
     const { email = "", password = "" } = this.get_users();
-    const { q = "" } = this._.get(this.$router, "history.current.query", {});
+    const q = decodeURIComponent(
+      this._.get(this.$router, "history.current.query.q", "")
+    );
     this.title = q;
     this.rule_form = {
       email,
@@ -125,7 +127,7 @@ export default {
             this.set_users({
               ...this.rule_form
             });
-            this.$router.push("/");
+            this.$router.push(`/home?q=${encodeURIComponent(this.title)}`);
           } else {
             this.$message.error(info || "登陆失败，请联系管理员");
           }
