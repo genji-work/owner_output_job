@@ -7,7 +7,9 @@
 #### 依赖安装
 
 ``` shell
-npm i 或者 yarn
+npm i
+# 或者
+yarn
 ```
 
 ### 项目运行
