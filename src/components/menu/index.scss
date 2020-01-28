@@ -1,0 +1,72 @@
+@import "../../styles/icon.scss";
+$root_url: "../../assets/";
+
+.home {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  @include bg("#{$root_url}bg.png");
+  background-position: left center;
+
+  .gen-box {
+    width: 1200px;
+    height: 350px;
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+
+    .gen-item {
+      width: 354px;
+      height: 100%;
+      padding: 35px;
+      background-color: #ffffff;
+      box-shadow: 0 11px 22px 0 rgba(0, 128, 203, 0.1);
+      border-radius: 10px;
+
+      & > i {
+        display: block;
+        width: 70px;
+        height: 70px;
+      }
+
+      & > h2 {
+        margin-top: 32px;
+        font-size: 24px;
+        color: #4a4a4a;
+        letter-spacing: -0.9px;
+        line-height: 29px;
+      }
+
+      & > p {
+        margin-top: 11px;
+        font-size: 16px;
+        color: #9B9B9B;
+        letter-spacing: 0;
+        line-height: 22px;
+      }
+
+      & > .el-button {
+        margin-top: 42px;
+        width: 150px;
+        height: 50px;
+        background-color: #0855A7;
+        box-shadow: 0 8px 16px 0 rgba(0,128,203,0.20);
+        border-radius: 30px;
+        color: #ffffff;
+      }
+
+      @for $i from 1 through 3 {
+        &:nth-child(#{$i}) {
+          & > i {
+            @include icon("#{$root_url}item#{$i}.png");
+          }
+        }
+      }
+    }
+  }
+}

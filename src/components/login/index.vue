@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <div class="login-form">
-      <h3 class="title">国际教育发展数据库</h3>
+      <h3 class="title">{{ this.title }}</h3>
       <el-form
         :model="rule_form"
         status-icon
@@ -35,14 +35,21 @@
         </el-form-item>
       </el-form>
     </div>
+    <Footer />
   </div>
 </template>
 
 <script>
 import { loginService } from "../../services/api";
+import Footer from "../footer";
 export default {
+  components: {
+    Footer
+  },
   created() {
     const { email = "", password = "" } = this.get_users();
+    const { q = "" } = this._.get(this.$router, "history.current.query", {});
+    this.title = q;
     this.rule_form = {
       email,
       password
@@ -71,6 +78,7 @@ export default {
       value === "" && callback(new Error("请输入密码"));
     };
     return {
+      title: "",
       rule_form: {
         email: "",
         password: ""
@@ -128,6 +136,6 @@ export default {
 };
 </script>
 
-<style lang="sass" scoped>
-@import './index.scss';
+<style lang="scss" scoped>
+@import "./index.scss";
 </style>

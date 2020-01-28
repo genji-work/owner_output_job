@@ -2,7 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 
 import login from "../components/login";
-import home from "../components/home";
+import menu from "../components/menu";
 
 Vue.use(Router);
 
@@ -17,8 +17,8 @@ export default new Router({
     },
     {
       path: "/",
-      name: "home",
-      component: home
+      name: "menu",
+      component: menu
     }
   ]
 });

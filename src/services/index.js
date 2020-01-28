@@ -3,7 +3,7 @@ import qs from "qs";
 import { Loading, Message } from "element-ui";
 import _ from "lodash";
 import cookies from "js-cookie";
-import router from "../router";
+import { backLogin } from "../utils";
 
 class AxiosUtil {
   static axios = null;
@@ -28,7 +28,7 @@ class AxiosUtil {
             return config;
           }
           Message.error("登录状态已失效，请重新登录");
-          router.push("/login");
+          backLogin();
           return Promise.reject(new Error("无权操作"));
         },
         error => {
@@ -58,7 +58,7 @@ class AxiosUtil {
           status === 403 && Message.error("没有权限操作，请联系管理员");
           status === 401 &&
             Message.error("登录状态已失效，请重新登录") &&
-            router.push("/login");
+            backLogin();
           return Promise.reject(error);
         }
       );

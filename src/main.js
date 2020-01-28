@@ -8,6 +8,8 @@ import App from "./App.vue";
 import "./registerServiceWorker";
 import store from "./store";
 
+import { intercept } from "./router/intercept";
+
 import "element-ui/lib/theme-chalk/index.css";
 import "./styles/reset.scss";
 import "./styles/app.scss";
@@ -19,6 +21,8 @@ Vue.prototype = Object.assign(Vue.prototype, {
   _,
   cookies
 });
+
+intercept(router);
 
 new Vue({
   store,

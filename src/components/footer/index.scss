@@ -1,0 +1,22 @@
+.footer {
+  position: absolute;
+  bottom: 30px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  width: 266px;
+  height: 22px;
+
+  & > span {
+    font-size: 16px;
+    line-height: 22px;
+    color: #0855A7;
+    letter-spacing: 0.11px;
+
+    &:nth-child(odd) {
+      cursor: pointer;
+    }
+  }
+}

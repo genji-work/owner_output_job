@@ -1,1 +1,33 @@
-### 暂无描述 看代码
+### 项目依赖安装
+#### 环境依赖
+
+    * node ( version > 8.0.0)
+    * chrome
+
+#### 依赖安装
+
+``` shell
+npm i 或者 yarn
+```
+
+### 项目运行
+``` shell
+npm run serve
+# 或者
+yarn serve
+```
+
+### 打包部署
+``` shell
+npm run build
+# 或者
+yarn build
+# 将dist文件内的文件部署到nginx即可
+```
+
+#### 注意事项：
+``` shell
+# node-sass 会下载超时解决方式
+npm config set sass_binary_site https://npm.taobao.org/mirrors/node-sass/
+# 设置全局镜像即可
+```
