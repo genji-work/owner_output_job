@@ -23,6 +23,7 @@ $root_url: '../../../../assets/';
         .pdf-left-img-box {
           width: 100%;
           min-height: 220px;
+          padding: 5px 10px 5px 5px;
           @include icon('#{$root_url}file-more.png');
           display: flex;
           align-items: center;
