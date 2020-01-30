@@ -1,10 +1,13 @@
-@import "../../styles/icon.scss";
-$root_url: "../../assets/";
+@import "../../../styles/icon.scss";
+$root_url: "../../../assets/";
 
 .header {
   width: 100%;
   height: 220px;
   padding: 30px 0;
+  position: fixed;
+  top: 0;
+  z-index: 100;
 
   @for $i from 1 through 3 {
     &.banner#{$i} {
@@ -91,6 +94,37 @@ $root_url: "../../assets/";
         font-size: 18px;
         margin-left: 10px;
         color: #FFFFFF;
+      }
+    }
+  }
+}
+.menu-list {
+  padding: 0;
+  width: 150px;
+
+  .menu-item {
+    margin-top: 0;
+    height: 44px;
+    line-height: 44px;
+    display: flex;
+    align-items: center;
+
+    &::before {
+      height: 0;
+      margin: 0;
+    }
+
+    & > i {
+      width: 20px;
+      height: 20px;
+      margin-right: 10px;
+    }
+
+    @for $i from 1 through 4 {
+      &:nth-child(#{$i}) {
+        & > i {
+          @include icon('#{$root_url}menu_item#{$i}.png');
+        }
       }
     }
   }

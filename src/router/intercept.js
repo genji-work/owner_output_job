@@ -5,6 +5,12 @@ export const db_list = [
   "国际教育实践案例库"
 ];
 
+export const category_map = {
+  国际教育发展数据库: "develop",
+  国际教育政策数据库: "policy",
+  国际教育实践案例库: "practice"
+};
+
 export const intercept = router => {
   router.beforeEach((to, from, next) => {
     const {

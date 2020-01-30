@@ -2,6 +2,7 @@ import Vue from "vue";
 import * as ElementUI from "element-ui";
 import _ from "lodash";
 import cookies from "js-cookie";
+import * as echarts from "echarts";
 
 import router from "./router";
 import App from "./App.vue";
@@ -19,7 +20,8 @@ Vue.config.productionTip = false;
 
 Vue.prototype = Object.assign(Vue.prototype, {
   _,
-  cookies
+  cookies,
+  echarts
 });
 
 intercept(router);

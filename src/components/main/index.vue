@@ -1,15 +1,23 @@
 <template>
-  <div class="home">
+  <div class="main">
     <Header />
-    <router-view />
+    <Search />
+    <div class="con con-home">
+      <router-view />
+    </div>
+    <Footer />
   </div>
 </template>
 
 <script>
-import Header from "../header";
+import Header from "./header";
+import Footer from "./footer";
+import Search from "./search";
 export default {
   components: {
-    Header
+    Header,
+    Footer,
+    Search
   },
   created() {},
   data() {

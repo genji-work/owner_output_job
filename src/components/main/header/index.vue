@@ -16,20 +16,20 @@
             <span>Admin</span>
             <i class="el-icon-arrow-down"></i>
           </div>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>
+          <el-dropdown-menu class="menu-list" slot="dropdown">
+            <el-dropdown-item class="menu-item">
               <i />
               <span>我的收藏</span>
             </el-dropdown-item>
-            <el-dropdown-item divided>
+            <el-dropdown-item class="menu-item" divided>
               <i />
               <span>我的上传</span>
             </el-dropdown-item>
-            <el-dropdown-item divided>
+            <el-dropdown-item class="menu-item" divided>
               <i />
               <span>个人中心</span>
             </el-dropdown-item>
-            <el-dropdown-item divided>
+            <el-dropdown-item class="menu-item" divided>
               <i />
               <span>退出</span>
             </el-dropdown-item>
@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { db_list } from "../../router/intercept";
+import { db_list } from "../../../router/intercept";
 export default {
   data() {
     const q = this._.get(this.$route, "query.q", "");

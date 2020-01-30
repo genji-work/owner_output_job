@@ -127,7 +127,7 @@ export default {
             this.set_users({
               ...this.rule_form
             });
-            this.$router.push(`/home?q=${encodeURIComponent(this.title)}`);
+            this.$router.push(`/main?q=${encodeURIComponent(this.title)}`);
           } else {
             this.$message.error(info || "登陆失败，请联系管理员");
           }

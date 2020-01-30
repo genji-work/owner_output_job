@@ -3,7 +3,8 @@ import Router from "vue-router";
 
 import login from "../components/login";
 import menu from "../components/menu";
-import home from "../components/home";
+import main from "../components/main";
+import home from "../components/main/home";
 
 Vue.use(Router);
 
@@ -22,10 +23,16 @@ export default new Router({
       component: menu
     },
     {
-      path: "/home",
-      name: home,
-      component: home,
-      children: []
+      path: "/main",
+      name: "main",
+      component: main,
+      children: [
+        {
+          path: "/",
+          name: "home",
+          component: home
+        }
+      ]
     }
   ]
 });
