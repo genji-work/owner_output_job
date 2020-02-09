@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { getFilter, changeFilterGo } from "../../../utils";
 export default {
   created() {
     this.valueReWrite();
@@ -25,32 +26,17 @@ export default {
   },
   methods: {
     valueReWrite() {
-      const {
-        query: { filter = "" }
-      } = this.$route;
-      const filter_zip = decodeURIComponent(filter) || "";
-      if (filter_zip) {
-        const { keyword = "" } = JSON.parse(filter_zip) || {};
-        this.value = keyword;
-      }
+      const filter = getFilter() || {};
+      const { keyword = "" } = filter;
+      this.value = keyword;
     },
     search() {
-      const {
-        query: { q, filter = "" },
-        path
-      } = this.$route;
-      const filter_zip = decodeURIComponent(filter) || "";
-      let query = {};
-      if (filter_zip) {
-        query = JSON.parse(filter_zip) || {};
-      }
+      const newPath = changeFilterGo({
+        keyword: this.value,
+        currentPage: 1
+      });
 
-      this.$router.push(
-        `${path}?q=${q}&filter=${JSON.stringify({
-          ...query,
-          keyword: this.value
-        })}`
-      );
+      this.$router.push(newPath);
     }
   },
   watch: {

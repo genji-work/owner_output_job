@@ -4,7 +4,7 @@ const getters = {};
 const mutations = {};
 
 export default {
-  namespace: true,
+  namespaced: true,
   state,
   actions,
   getters,

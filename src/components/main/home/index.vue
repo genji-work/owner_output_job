@@ -10,6 +10,7 @@
 import Menu from "./menu";
 import Container from "./container";
 import Result from "./result";
+import { getFilter } from "../../../utils";
 export default {
   components: {
     Menu,
@@ -26,17 +27,7 @@ export default {
   },
   methods: {
     changeQuery() {
-      const { filter = "" } = this.$route.query;
-      let query = null;
-      filter &&
-        (() => {
-          try {
-            query = JSON.parse(decodeURIComponent(filter));
-          } catch (e) {
-            // throw new Error("没有筛选条件");
-          }
-        })();
-      this.query = query;
+      this.query = getFilter();
     }
   },
   watch: {

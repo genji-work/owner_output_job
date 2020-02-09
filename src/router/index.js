@@ -5,6 +5,7 @@ import login from "../components/login";
 import menu from "../components/menu";
 import main from "../components/main";
 import home from "../components/main/home";
+import info from "../components/main/info";
 
 Vue.use(Router);
 
@@ -31,6 +32,11 @@ export default new Router({
           path: "/",
           name: "home",
           component: home
+        },
+        {
+          path: "/main/info",
+          name: "info",
+          component: info
         }
       ]
     }

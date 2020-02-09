@@ -15,13 +15,16 @@ import "element-ui/lib/theme-chalk/index.css";
 import "./styles/reset.scss";
 import "./styles/app.scss";
 
+const $ = require("jquery");
+
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
 
 Vue.prototype = Object.assign(Vue.prototype, {
   _,
   cookies,
-  echarts
+  echarts,
+  $
 });
 
 intercept(router);

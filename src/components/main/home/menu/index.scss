@@ -12,12 +12,18 @@ $root_url: '../../../../assets/';
     height: 28px;
     display: flex;
     align-items: center;
+    cursor: pointer;
 
     .filter {
       display: block;
       width: 22px;
       height: 19px;
       @include icon('#{$root_url}filter.png');
+    }
+
+    & > i {
+      font-size: 20px;
+      color: #C7C7C7;
     }
 
     & > span {
@@ -71,6 +77,42 @@ $root_url: '../../../../assets/';
 
         &.year {
           max-height: 350px;
+
+          & > li {
+            &:hover {
+              color: #0F77FF;
+            }
+  
+            &.active {
+              color: #0F77FF;
+            }
+          }
+        }
+
+        &.country {
+          .children-con {
+            background-color: #F9F9F9;
+            padding: 20px 30px;
+            margin-top: 20px;
+
+            & > li {
+              font-size: 16px;
+              color: #282828;
+              letter-spacing: 0;
+
+              &:nth-last-child(n+2) {
+                margin-bottom: 20px;
+              }
+
+              &:hover {
+                color: #0F77FF;
+              }
+
+              &.active {
+                color: #0F77FF;
+              }
+            }
+          }
         }
 
         & > li {
@@ -81,12 +123,14 @@ $root_url: '../../../../assets/';
           margin: 20px 0;
           cursor: pointer;
 
-          &:hover {
-            color: #0F77FF;
-          }
-
-          &.active {
-            color: #0F77FF;
+          &:first-child {
+            &:hover {
+              color: #0F77FF;
+            }
+  
+            &.active {
+              color: #0F77FF;
+            }
           }
         }
       }

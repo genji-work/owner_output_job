@@ -1,6 +1,28 @@
 <template>
   <div class="result">
     <div class="res-list">
+      <div class="order-con">
+        <div class="year-order" @click="changeOrder('year')">
+          <span>按年份排序</span>
+          <i
+            :class="
+              `${order === 'year_desc' ? 'desc' : ''} ${
+                order === 'year_asc' ? 'asc' : ''
+              }`
+            "
+          ></i>
+        </div>
+        <div class="country-order" @click="changeOrder('country')">
+          <span>按国家排序</span>
+          <i
+            :class="
+              `${order === 'country_desc' ? 'desc' : ''} ${
+                order === 'country_asc' ? 'asc' : ''
+              }`
+            "
+          ></i>
+        </div>
+      </div>
       <div class="pdf-item" v-for="item in data" :key="item.id">
         <div class="pdf-left">
           <div class="pdf-left-img-box">
@@ -23,8 +45,8 @@
               <span>{{ item.year }}</span>
             </div>
             <div class="op-con">
-              <i class="preview"></i>
-              <i class="download"></i>
+              <i class="preview" @click="goPreview(item)"></i>
+              <i class="download" @click="downloadPdf"></i>
             </div>
           </div>
           <div class="pdf-infomation">
@@ -38,27 +60,86 @@
             </div>
           </div>
           <div class="pdf-op">
-            <div class="all-page">
+            <div class="all-page" @click="dropResult('info', item)">
               <span
                 >共<em>{{ item.documentTotalPage || 0 }}</em
                 >页</span
               >
-              <i class="el-icon-caret-top"></i>
+              <i
+                :class="
+                  item.showInfo ? 'el-icon-caret-top' : 'el-icon-caret-bottom'
+                "
+              ></i>
             </div>
             <div class="page-op">
-              <span>在新标签页中查看所有页面</span>
+              <span v-show="!keyword">在新标签页中查看所有页面</span>
+              <span v-show="keyword" @click="dropResult('result', item)"
+                >查看提及<em>"</em><em class="keyword">{{ keyword }}</em
+                ><em>"</em>的全部{{ item.pages.length }}个页面</span
+              >
+            </div>
+          </div>
+          <div class="page-info-con" v-show="item.showInfo">
+            <div
+              class="page-info-item"
+              v-for="(child, idx) in item.documentTotalPage > 8
+                ? new Array(8)
+                : new Array(item.documentTotalPage)"
+              :key="idx"
+            >
+              <div class="page-info-item-con">
+                <img
+                  :src="
+                    `/v1/docdive/documents/${item.id}/thumb_p${idx + 1}.png`
+                  "
+                  alt=""
+                />
+              </div>
+              <div class="page-info-num">P.{{ idx + 1 }}</div>
+            </div>
+          </div>
+          <div class="page-result-con" v-show="item.showResult">
+            <div
+              class="page-result-item"
+              v-for="(child, index) in item.pages"
+              :key="index"
+            >
+              <div class="page-result-con-left">
+                <div class="page-result-img">
+                  <img
+                    :src="
+                      `/v1/docdive/documents/${item.id}/thumb_p${child.page}.png`
+                    "
+                    alt=""
+                  />
+                </div>
+                <div class="page-result-num">P.{{ child.page }}</div>
+              </div>
+              <div class="page-result-con-text" v-html="child.text"></div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="pagnation"></div>
+    <div class="pagnation">
+      <el-pagination
+        background
+        :current-page="currentPage"
+        layout="prev, pager, next"
+        :total="total"
+        :page-size="10"
+        @current-change="changePage"
+      >
+      </el-pagination>
+    </div>
   </div>
 </template>
 
 <script>
 import { searchPdfService } from "../../../../services/api";
 import { category_map } from "../../../../router/intercept";
+import { changeFilterGo } from "../../../../utils";
+import { getFilter } from "../../../../utils";
 export default {
   async created() {
     this.search();
@@ -66,26 +147,90 @@ export default {
   methods: {
     async search() {
       const {
-        query: { q, filter }
+        query: { q }
       } = this.$route;
-      const filter_res = JSON.parse(decodeURIComponent(filter));
+      const filter = getFilter() || {};
       const params = {
-        ...filter_res,
+        ...filter,
         category: category_map[q]
       };
+      const { keyword = "", currentPage = 1 } = filter;
+      this.keyword = keyword;
+      this.currentPage = currentPage;
       const res = await searchPdfService(params);
       const {
         code,
-        data: { data = [] }
+        data: { data = [], total = 0 }
       } = res;
       if (code === "200") {
-        this.data = data || [];
+        this.data =
+          data.map(item => {
+            item.showInfo = false;
+            item.showResult = false;
+            return item;
+          }) || [];
       }
-    }
+      this.total = total;
+    },
+    dropResult(type, item) {
+      switch (type) {
+        case "result":
+          item.showInfo = false;
+          item.showResult = !item.showResult;
+          break;
+        case "info":
+          item.showResult = false;
+          item.showInfo = !item.showInfo;
+          break;
+      }
+    },
+    changeOrder(type) {
+      switch (type) {
+        case "year":
+          if (this.order === "year_asc") {
+            this.order = "year_desc";
+          } else if (this.order === "year_desc") {
+            this.order = "";
+          } else {
+            this.order = "year_asc";
+          }
+          break;
+        case "country":
+          if (this.order === "country_asc") {
+            this.order = "country_desc";
+          } else if (this.order === "country_desc") {
+            this.order = "";
+          } else {
+            this.order = "country_asc";
+          }
+          break;
+      }
+    },
+    changePage(page) {
+      const newPath = changeFilterGo({
+        currentPage: page
+      });
+      this.$router.push(newPath);
+      this.$("#result_main").animate({ scrollTop: 0 });
+    },
+    goPreview(item) {
+      const { id, documentTotalPage } = item;
+      const {
+        query: { q = "" }
+      } = this.$route;
+      this.$router.push(
+        `/main/info?q=${q}&doc_id=${id}&total=${documentTotalPage}`
+      );
+    },
+    downloadPdf() {}
   },
   data() {
     return {
-      data: []
+      data: [],
+      keyword: "",
+      order: "",
+      currentPage: 1,
+      total: 0
     };
   },
   watch: {
