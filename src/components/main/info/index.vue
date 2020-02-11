@@ -49,7 +49,11 @@
               <div
                 class="dist-item"
                 v-for="(item, index) in total
-                  ? new Array(total - (dist_index - 1) * 15)
+                  ? new Array(
+                      dist_index < dist_all_page
+                        ? 15
+                        : total - (dist_index - 1) * 15
+                    )
                   : []"
                 :key="index"
               >
@@ -64,7 +68,7 @@
                   />
                 </div>
                 <div class="dist-pagenum">
-                  P.{{ index + (dist_index - 1) * 15 }}
+                  P.{{ index + (dist_index - 1) * 15 + 1 }}
                 </div>
               </div>
             </div>
@@ -126,6 +130,16 @@ export default {
           this.preview_index++;
           break;
       }
+    },
+    distChange(type) {
+      switch (type) {
+        case "left":
+          this.dist_index--;
+          break;
+        case "right":
+          this.dist_index++;
+          break;
+      }
     }
   },
   data() {
@@ -137,7 +151,8 @@ export default {
       doc_id,
       total,
       preview_index: 1,
-      dist_index: 1
+      dist_index: 1,
+      dist_all_page: Math.ceil(total / 15)
     };
   },
   watch: {

@@ -22,14 +22,15 @@ export default {
     Footer,
     Search
   },
-  created() {
+  async created() {
     const { name = "home" } = this.$route;
     if (name === "home" || name === "main") {
       this.routeName = "home";
     } else {
       this.routeName = name;
     }
-    this.$store.dispatch("dic/init");
+    await this.$store.dispatch("dic/init");
+    this.ready = this.getReady;
   },
   data() {
     return {
