@@ -110,6 +110,9 @@ $root_url: '../../../../assets/';
             .left-body2 {
               width: calc(100% - 60px);
               text-align: center;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
             }
             .right-body1 {
               width: 60px;

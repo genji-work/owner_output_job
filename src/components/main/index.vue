@@ -2,10 +2,7 @@
   <div class="main" id="result_main">
     <Header />
     <Search v-if="routeName === 'home'" />
-    <div
-      :class="`con con-home ${routeName !== 'home' ? 'other' : ''}`"
-      v-if="ready"
-    >
+    <div :class="`con ${CLASS_NAME_MAP[routeName]}`" v-if="ready">
       <router-view />
     </div>
     <Footer />
@@ -16,6 +13,16 @@
 import Header from "./header";
 import Footer from "./footer";
 import Search from "./search";
+
+const CLASS_NAME_MAP = {
+  home: "home",
+  base_info: "info",
+  main: "home",
+  info: "other",
+  uploads: "info",
+  collects: "info"
+};
+
 export default {
   components: {
     Header,
@@ -37,7 +44,8 @@ export default {
       value: "",
       title: "",
       routeName: "home",
-      ready: false
+      ready: false,
+      CLASS_NAME_MAP
     };
   },
   computed: {

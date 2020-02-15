@@ -7,10 +7,11 @@
     <div class="con">
       <el-tabs class="menu" v-model="activeName">
         <el-tab-pane label="预览PDF" name="first">
-          <div class="preview-con">
+          <div class="preview-con" v-loading="preview_loading">
             <img
+              @load="imgLoad"
               :src="
-                `/v1/docdive/documents/${doc_id}/thumb_p${preview_index}.png`
+                `/api/file/preview/${country}/${doc_id}/p${preview_index}.${fileTypeMap[file_type]}`
               "
               alt=""
             />
@@ -21,18 +22,20 @@
               <el-button
                 type="info"
                 icon="el-icon-arrow-left"
-                :disabled="preview_index === 1"
+                :disabled="preview_loading || preview_index === 1"
                 @click="previewChange('left')"
                 plain
               ></el-button>
               <el-input-number
                 v-model="preview_index"
                 :controls="false"
+                :disabled="preview_loading"
                 :min="1"
+                @change="previewChange"
                 :max="parseInt(total)"
               ></el-input-number>
               <el-button
-                :disabled="preview_index === +total"
+                :disabled="preview_index === +total || preview_loading"
                 type="info"
                 icon="el-icon-arrow-right"
                 @click="previewChange('right')"
@@ -60,9 +63,9 @@
                 <div class="img-box">
                   <img
                     :src="
-                      `/v1/docdive/documents/${doc_id}/thumb_p${index +
+                      `/api/file/preview/${country}/${doc_id}/thumb_p${index +
                         (dist_index - 1) * 15 +
-                        1}.png`
+                        1}.${fileTypeMap[file_type]}`
                     "
                     alt=""
                   />
@@ -100,19 +103,70 @@
             </div>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="文本内容" name="third"> </el-tab-pane>
+        <el-tab-pane label="文本内容" name="third">
+          <div class="txt-con">
+            <el-input
+              v-loading="txt_loading"
+              type="textarea"
+              class="txt-area"
+              autosize
+              resize="none"
+              v-model="txt_content"
+              disabled
+            />
+          </div>
+          <div class="preview-footer">
+            <span class="preview-pagenum">P.{{ txt_index }}</span>
+            <div class="preview-paganation">
+              <el-button
+                type="info"
+                icon="el-icon-arrow-left"
+                :disabled="txt_index === 1 || txt_loading"
+                @click="txtChange('left')"
+                plain
+              ></el-button>
+              <el-input-number
+                :disabled="txt_loading"
+                v-model="txt_index"
+                :controls="false"
+                :min="1"
+                @change="txtChange"
+                :max="parseInt(total)"
+              ></el-input-number>
+              <el-button
+                :disabled="txt_index === +total || txt_loading"
+                type="info"
+                icon="el-icon-arrow-right"
+                @click="txtChange('right')"
+                plain
+              >
+              </el-button>
+              <span class="preview-pagenum-total">共 {{ total }} 页</span>
+            </div>
+          </div>
+        </el-tab-pane>
       </el-tabs>
     </div>
   </div>
 </template>
 
 <script>
+import { fileTypeMap } from "../../../utils";
+import { queryTxtService } from "../../../services/api";
+
 export default {
-  created() {},
+  async created() {
+    this.previewTxt();
+  },
   methods: {
     initData() {
       this.preview_index = 1;
       this.activeName = "first";
+    },
+    imgLoad(res) {
+      if (res) {
+        this.preview_loading = false;
+      }
     },
     backHome() {
       const {
@@ -120,8 +174,19 @@ export default {
       } = this.$route;
       this.$router.push(`/main?q=${q}`);
     },
-    handleClick() {},
+    async previewTxt() {
+      const params = {
+        id: this.doc_id,
+        country: this.country,
+        page: this.txt_index
+      };
+      this.txt_loading = true;
+      const res = await queryTxtService(params);
+      this.txt_loading = false;
+      this.txt_content = res;
+    },
     previewChange(type) {
+      this.preview_loading = true;
       switch (type) {
         case "left":
           this.preview_index--;
@@ -131,6 +196,17 @@ export default {
           break;
       }
     },
+    txtChange(type) {
+      switch (type) {
+        case "left":
+          this.txt_index--;
+          break;
+        case "right":
+          this.txt_index++;
+          break;
+      }
+      this.previewTxt();
+    },
     distChange(type) {
       switch (type) {
         case "left":
@@ -139,19 +215,28 @@ export default {
         case "right":
           this.dist_index++;
           break;
+        default:
+          break;
       }
     }
   },
   data() {
     const {
-      query: { doc_id = "", total = 0 }
+      query: { doc_id = "", total = 0, country = "", file_type = "" }
     } = this.$route;
     return {
       activeName: "first",
+      preview_loading: true,
+      txt_loading: true,
       doc_id,
       total,
+      file_type,
+      fileTypeMap,
+      country,
       preview_index: 1,
       dist_index: 1,
+      txt_index: 1,
+      txt_content: "",
       dist_all_page: Math.ceil(total / 15)
     };
   },

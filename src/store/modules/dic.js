@@ -1,8 +1,14 @@
-import { dicCountryService, dicCityService } from "../../services/api";
+import {
+  dicCountryService,
+  dicCityService,
+  allLanguageService
+} from "../../services/api";
 
 const state = {
   countryMap: {},
+  countryList: [],
   cityMap: {},
+  languages: [],
   ready: false
 };
 
@@ -10,17 +16,34 @@ const actions = {
   async init({ commit }) {
     const countryRes = await dicCountryService();
     const cityRes = await dicCityService();
+    const languageRes = await allLanguageService();
+    const countryList = [];
     if (countryRes) {
-      commit("setCountryMap", {
+      await commit("setCountryMap", {
         countryMap: countryRes
       });
     }
     if (cityRes) {
-      commit("setCityMap", {
+      await commit("setCityMap", {
         cityMap: cityRes
       });
+      Object.keys(cityRes).map(item => {
+        countryList.push({
+          key: item,
+          value: cityRes[item]
+        });
+      });
+      await commit("setCountryList", {
+        countryList
+      });
     }
-    commit("setReady", {
+
+    if (languageRes && languageRes.code === "200") {
+      await commit("setLanguages", {
+        languages: languageRes.data
+      });
+    }
+    await commit("setReady", {
       ready: true
     });
   }
@@ -33,6 +56,12 @@ const mutations = {
   },
   setCityMap(state, { cityMap }) {
     state.cityMap = cityMap;
+  },
+  setLanguages(state, { languages }) {
+    state.languages = languages;
+  },
+  setCountryList(state, { countryList }) {
+    state.countryList = countryList;
   },
   setReady(state, { ready }) {
     state.ready = ready;

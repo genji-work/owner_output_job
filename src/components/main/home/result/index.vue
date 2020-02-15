@@ -22,13 +22,23 @@
             "
           ></i>
         </div>
+        <div class="country-order" @click="changeOrder('page')">
+          <span>按页数排序</span>
+          <i
+            :class="
+              `${order === 'page_desc' ? 'desc' : ''} ${
+                order === 'page_asc' ? 'asc' : ''
+              }`
+            "
+          ></i>
+        </div>
       </div>
       <div class="pdf-item" v-for="item in data" :key="item.id">
         <div class="pdf-left">
           <div class="pdf-left-img-box">
             <span v-if="!item.id">暂无图片</span>
             <img
-              :src="`/v1/docdive/documents/${item.id}/thumb_p1.png`"
+              :src="`/api/file/preview/${item.country}/${item.id}/thumb_p1.png`"
               alt=""
             />
           </div>
@@ -38,15 +48,19 @@
           <div class="pdf-description">
             <div class="country-con">
               <span>国家:</span>
-              <span>{{ item.country }}</span>
+              <span>{{ cityMap[item.country] }}</span>
             </div>
             <div class="year-con">
               <span>年份:</span>
               <span>{{ item.year }}</span>
             </div>
             <div class="op-con">
-              <i class="preview" @click="goPreview(item)"></i>
-              <i class="download" @click="downloadPdf"></i>
+              <i class="el-icon-view preview" @click="goPreview(item)"></i>
+              <i class="el-icon-star-off" @click="collect(item)"></i>
+              <i
+                class="el-icon-download download"
+                @click="downloadPdf(item)"
+              ></i>
             </div>
           </div>
           <div class="pdf-infomation">
@@ -90,7 +104,8 @@
               <div class="page-info-item-con">
                 <img
                   :src="
-                    `/v1/docdive/documents/${item.id}/thumb_p${idx + 1}.png`
+                    `/api/file/preview/${item.country}/${item.id}/thumb_p${idx +
+                      1}.png`
                   "
                   alt=""
                 />
@@ -108,7 +123,7 @@
                 <div class="page-result-img">
                   <img
                     :src="
-                      `/v1/docdive/documents/${item.id}/thumb_p${child.page}.png`
+                      `/api/file/preview/${item.country}/${item.id}/thumb_p${child.page}.png`
                     "
                     alt=""
                   />
@@ -136,9 +151,13 @@
 </template>
 
 <script>
-import { searchPdfService } from "../../../../services/api";
+import {
+  collectService,
+  downloadService,
+  searchPdfService
+} from "../../../../services/api";
 import { category_map } from "../../../../router/intercept";
-import { changeFilterGo } from "../../../../utils";
+import { changeFilterGo, orderFormart } from "../../../../utils";
 import { getFilter } from "../../../../utils";
 export default {
   async created() {
@@ -154,10 +173,13 @@ export default {
         ...filter,
         category: category_map[q]
       };
-      const { keyword = "", currentPage = 1 } = filter;
+      const { keyword = "", currentPage = 1, order = "" } = filter;
       this.keyword = keyword;
       this.currentPage = currentPage;
-      const res = await searchPdfService(params);
+      const res = await searchPdfService({
+        ...params,
+        ...orderFormart(order)
+      });
       const {
         code,
         data: { data = [], total = 0 }
@@ -204,7 +226,20 @@ export default {
             this.order = "country_asc";
           }
           break;
+        case "page":
+          if (this.order === "page_asc") {
+            this.order = "page_desc";
+          } else if (this.order === "page_desc") {
+            this.order = "";
+          } else {
+            this.order = "page_asc";
+          }
+          break;
       }
+      const newPath = changeFilterGo({
+        order: this.order
+      });
+      this.$router.push(newPath);
     },
     changePage(page) {
       const newPath = changeFilterGo({
@@ -214,23 +249,39 @@ export default {
       this.$("#result_main").animate({ scrollTop: 0 });
     },
     goPreview(item) {
-      const { id, documentTotalPage } = item;
+      const { id, documentTotalPage, country, fileType } = item;
       const {
         query: { q = "" }
       } = this.$route;
       this.$router.push(
-        `/main/info?q=${q}&doc_id=${id}&total=${documentTotalPage}`
+        `/main/info?q=${q}&doc_id=${id}&total=${documentTotalPage}&country=${country}&file_type=${fileType}`
       );
     },
-    downloadPdf() {}
+    async collect(item) {
+      const res = await collectService({
+        documentId: item.id
+      });
+      res.code === "200" && this.$message.success("收藏成功");
+      res.code !== "200" && this.$message.error(res.message || "收藏失败");
+    },
+    downloadPdf(item) {
+      const { id, fileName, country } = item;
+      downloadService({
+        documentId: id,
+        fileName,
+        country
+      });
+    }
   },
   data() {
+    const { cityMap } = this._.get(this, "$store.state.dic", {});
     return {
       data: [],
       keyword: "",
       order: "",
       currentPage: 1,
-      total: 0
+      total: 0,
+      cityMap
     };
   },
   watch: {

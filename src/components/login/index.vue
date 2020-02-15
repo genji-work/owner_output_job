@@ -122,11 +122,14 @@ export default {
       this.$refs.rule_form.validate(async valid => {
         if (valid) {
           const { code, info = "" } = await loginService(this.rule_form);
-          if (code === 0) {
+          if (code === "200") {
             this.$message.success("登录成功");
             this.set_users({
               ...this.rule_form
             });
+            const { dispatch } = this.$store;
+            const { email } = this.rule_form;
+            await dispatch("auth/saveLoginUserName", email);
             this.$router.push(`/main?q=${encodeURIComponent(this.title)}`);
           } else {
             this.$message.error(info || "登陆失败，请联系管理员");

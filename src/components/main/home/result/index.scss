@@ -130,18 +130,25 @@ $root_url: '../../../../assets/';
             .preview {
               display: inline-block;
               margin-right: 30px;
-              width: 20px;
-              height: 20px;
+              font-size: 20px;
+              color: #999;
               cursor: pointer;
-              @include icon('#{$root_url}preview.png');
+            }
+
+            .el-icon-star-off {
+              display: inline-block;
+              margin-right: 30px;
+              font-size: 20px;
+              color: #999;
+              cursor: pointer;
             }
 
             .download {
               display: inline-block;
-              width: 20px;
-              height: 20px;
+              margin-right: 30px;
+              font-size: 20px;
+              color: #999;
               cursor: pointer;
-              @include icon('#{$root_url}download.png');
             }
           }
         }
