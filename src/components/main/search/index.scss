@@ -12,6 +12,23 @@
     border-radius: 8px;
     margin: 85px auto 0 auto;
 
+    .select-box {
+      height: 100%;
+
+      /deep/ .el-input {
+        height: 100%;
+        align-items: center;
+        & > input {
+          height: 100%;
+          font-size: 16px;
+          border: 0;
+          border-right: 1px solid #C0C4CC;
+          background-color: #fff;
+          border-radius: 8px 0 0 8px;
+        }
+      }
+    }
+
     .el-input {
       width: calc(100% - 180px);
       height: 100%;
@@ -31,7 +48,7 @@
       & /deep/ .el-input__inner {
         height: 100%;
         border: 0;
-        border-radius: 8px 0 0 8px;
+        border-radius: 0;
         font-size: 20px;
         color: #273951;
         letter-spacing: -0.09px;

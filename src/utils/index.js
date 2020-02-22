@@ -2,6 +2,7 @@ import router from "../router";
 import { db_list } from "../router/intercept";
 import _ from "lodash";
 const JSONParse = require("json-parse-safe");
+const $ = require("jquery");
 
 export const backLogin = () => {
   const { q = "" } = _.get(router, "history.current.query", {});
@@ -96,4 +97,14 @@ export const orderFormart = order => {
     default:
       return {};
   }
+};
+
+export const viewGo = url => {
+  const a = $(`<a href="${url}" target="_blank"></a>`);
+  const dom = a.get(0);
+  const e = document.createEvent("MouseEvents");
+
+  e.initEvent("click", true, true);
+  dom.dispatchEvent(e);
+  a.remove();
 };

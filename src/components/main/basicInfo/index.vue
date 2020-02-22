@@ -1,5 +1,6 @@
 <template>
   <div class="base-info-con">
+    <update-password v-model="update_model" @close="close" />
     <div class="title">
       <i></i>
       <span>基本信息</span>
@@ -25,20 +26,31 @@
         <div class="label">职位</div>
         <div class="item-con"></div>
       </div>
+      <div class="item">
+        <div class="label">安全设置</div>
+        <div class="item-con">
+          <span class="link-span" @click="updatePassword">修改密码</span>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { basicInfoService } from "../../../services/api";
+import UpdatePassword from "./updatePassword";
 
 export default {
+  components: {
+    "update-password": UpdatePassword
+  },
   created() {
     this.init();
   },
   data() {
     return {
-      userdata: {}
+      userdata: {},
+      update_model: false
     };
   },
   methods: {
@@ -57,6 +69,12 @@ export default {
           return {};
         })());
       this.userdata = userdata;
+    },
+    updatePassword() {
+      this.update_model = true;
+    },
+    close() {
+      this.update_model = false;
     }
   },
   watch: {

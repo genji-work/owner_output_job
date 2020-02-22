@@ -67,3 +67,6 @@ export const downloadService = params =>
 
 export const collectCancelService = async params =>
   http.post("/api/document/cancelDocumentStore.json", params);
+
+export const updatePasswordService = async params =>
+  http.post("/users/user/update/password", params);

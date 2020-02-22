@@ -69,7 +69,8 @@
 </template>
 
 <script>
-  import {downloadPdfService, uploadListService} from "../../../services/api";
+import { uploadListService } from "../../../services/api";
+import { viewGo } from "../../../utils";
 
 export default {
   created() {
@@ -111,12 +112,8 @@ export default {
       this.init();
     },
     download(data) {
-      const { id, fileName, country } = data;
-      downloadPdfService({
-        documentId: id,
-        fileName,
-        country
-      });
+      const { downloadUrl = "" } = data;
+      downloadUrl && viewGo(downloadUrl);
     }
   }
 };

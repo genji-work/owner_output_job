@@ -1,7 +1,7 @@
 <template>
   <div class="main" id="result_main">
     <Header />
-    <Search v-if="routeName === 'home'" />
+    <Search v-if="routeName === 'home' && ready" />
     <div :class="`con ${CLASS_NAME_MAP[routeName]}`" v-if="ready">
       <router-view />
     </div>

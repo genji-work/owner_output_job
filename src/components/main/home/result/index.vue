@@ -151,13 +151,9 @@
 </template>
 
 <script>
-import {
-  collectService,
-  downloadService,
-  searchPdfService
-} from "../../../../services/api";
+import { collectService, searchPdfService } from "../../../../services/api";
 import { category_map } from "../../../../router/intercept";
-import { changeFilterGo, orderFormart } from "../../../../utils";
+import { changeFilterGo, orderFormart, viewGo } from "../../../../utils";
 import { getFilter } from "../../../../utils";
 export default {
   async created() {
@@ -264,13 +260,9 @@ export default {
       res.code === "200" && this.$message.success("收藏成功");
       res.code !== "200" && this.$message.error(res.message || "收藏失败");
     },
-    downloadPdf(item) {
-      const { id, fileName, country } = item;
-      downloadService({
-        documentId: id,
-        fileName,
-        country
-      });
+    async downloadPdf(item) {
+      const { downloadUrl = "" } = item;
+      downloadUrl && viewGo(downloadUrl);
     }
   },
   data() {
