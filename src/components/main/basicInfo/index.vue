@@ -1,6 +1,10 @@
 <template>
   <div class="base-info-con">
-    <update-password v-model="update_model" @close="close" />
+    <update-password
+      v-if="update_model"
+      v-model="update_model"
+      @close="close"
+    />
     <div class="title">
       <i></i>
       <span>基本信息</span>

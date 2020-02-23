@@ -89,10 +89,10 @@ export default {
     save() {
       this.$refs.update_form.validate(async valid => {
         if (valid) {
-          const username = this.cookies.get("email");
+          const username = this.cookies.get("userName");
           const {
             new_password: password,
-            confirm_password: oldPassword
+            old_password: oldPassword
           } = this.form;
           const res = await updatePasswordService({
             username,
@@ -100,8 +100,10 @@ export default {
             oldPassword
           });
           const { code = "", message = "" } = res || {};
-          code === "200" && this.$message.success("修改成功");
-          code !== "200" && this.$message.success(message || "修改失败");
+          code === "200" &&
+            this.$message.success("修改成功") &&
+            this.$emit("close");
+          code !== "200" && this.$message.error(message || "修改失败");
         }
       });
     }
