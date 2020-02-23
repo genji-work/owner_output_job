@@ -13,7 +13,6 @@ import collects from "../components/main/collects";
 Vue.use(Router);
 
 export default new Router({
-  mode: "history",
   base: process.env.BASE_URL,
   routes: [
     {
