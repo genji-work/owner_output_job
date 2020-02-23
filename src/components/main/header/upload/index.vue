@@ -156,6 +156,16 @@ export default {
       year: [{ required: true, message: "请选择年份", trigger: "change" }],
       language: [{ required: true, message: "请选择语言", trigger: "change" }]
     };
+    const languages = (this.languages = this._.get(
+      this,
+      ["$store", "state", "dic", "languages"],
+      []
+    ));
+    const countryList = (this.languages = this._.get(
+      this,
+      ["$store", "state", "dic", "countryList"],
+      []
+    ));
     const form = {
       fileId: "",
       description: "",
@@ -166,27 +176,14 @@ export default {
       category: category_map[q]
     };
     return {
-      countryList: [],
-      languages: [],
+      countryList,
+      languages,
       form,
       file: null,
       loading: false,
       percent: 0,
       rules
     };
-  },
-  watch: {
-    value(val) {
-      if (val) {
-        const { countryList, languages } = this._.get(
-          this,
-          "$store.state.dic",
-          {}
-        );
-        this.countryList = countryList;
-        this.languages = languages;
-      }
-    }
   }
 };
 </script>

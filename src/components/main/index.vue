@@ -1,11 +1,11 @@
 <template>
   <div class="main" id="result_main">
-    <Header />
+    <Header v-if="ready" />
     <Search v-if="routeName === 'home' && ready" />
     <div :class="`con ${CLASS_NAME_MAP[routeName]}`" v-if="ready">
       <router-view />
     </div>
-    <Footer />
+    <Footer v-if="ready" />
   </div>
 </template>
 
