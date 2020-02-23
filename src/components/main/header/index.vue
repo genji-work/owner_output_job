@@ -1,6 +1,6 @@
 <template>
   <div :class="`header banner${idx}`">
-    <ownerUpload v-model="upload_model" @close="close" />
+    <ownerUpload v-if="upload_model" v-model="upload_model" @close="close" />
     <div class="title-con">
       <div class="icon-con" @click="backHome">
         <i :class="`logo logo${idx}`" />
@@ -51,7 +51,7 @@
 
 <script>
 import { db_list } from "../../../router/intercept";
-import {basicInfoService, logoutService} from "../../../services/api";
+import { basicInfoService, logoutService } from "../../../services/api";
 import ownerUpload from "./upload";
 export default {
   components: {

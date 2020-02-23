@@ -23,7 +23,22 @@
           width="100"
           prop="fileType"
         ></el-table-column>
+        <el-table-column label="审核状态" width="100">
+          <template slot-scope="$scopedSlots">
+            <span class="table-title">{{
+              documentApprovalStatusMap[$scopedSlots.row.documentApprovalStatus]
+            }}</span>
+            <el-tooltip
+              v-show="$scopedSlots.row.documentApprovalStatus === 3"
+              :content="$scopedSlots.row.approvalComments"
+              placement="top"
+            >
+              <i class="el-icon-question"></i>
+            </el-tooltip>
+          </template>
+        </el-table-column>
         <el-table-column label="年份" width="100" prop="year"></el-table-column>
+
         <el-table-column
           label="国家"
           width="120"
@@ -70,7 +85,7 @@
 
 <script>
 import { uploadListService } from "../../../services/api";
-import { viewGo } from "../../../utils";
+import { documentApprovalStatusMap, viewGo } from "../../../utils";
 
 export default {
   created() {
@@ -84,7 +99,8 @@ export default {
     return {
       data: [],
       params: defaultParams,
-      total: 0
+      total: 0,
+      documentApprovalStatusMap
     };
   },
   methods: {

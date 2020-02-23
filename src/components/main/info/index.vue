@@ -11,7 +11,7 @@
             <img
               @load="imgLoad"
               :src="
-                `/api/file/preview/${country}/${doc_id}/p${preview_index}.${fileTypeMap[file_type]}`
+                `/api/file/preview/${country}/${doc_id}/p${preview_index}.png`
               "
               alt=""
             />
@@ -65,7 +65,7 @@
                     :src="
                       `/api/file/preview/${country}/${doc_id}/thumb_p${index +
                         (dist_index - 1) * 15 +
-                        1}.${fileTypeMap[file_type]}`
+                        1}.png`
                     "
                     alt=""
                   />
@@ -151,7 +151,6 @@
 </template>
 
 <script>
-import { fileTypeMap } from "../../../utils";
 import { queryTxtService } from "../../../services/api";
 
 export default {
@@ -160,7 +159,7 @@ export default {
   },
   methods: {
     initData() {
-      this.preview_index = 1;
+      // this.preview_index = 1;
       this.activeName = "first";
     },
     imgLoad(res) {
@@ -222,18 +221,21 @@ export default {
   },
   data() {
     const {
-      query: { doc_id = "", total = 0, country = "", file_type = "" }
+      query: { doc_id = "", total = 0, country = "", page }
     } = this.$route;
+    let preview_index = 1;
+    page &&
+      (() => {
+        preview_index = page;
+      })();
     return {
       activeName: "first",
       preview_loading: true,
       txt_loading: true,
       doc_id,
       total,
-      file_type,
-      fileTypeMap,
       country,
-      preview_index: 1,
+      preview_index,
       dist_index: 1,
       txt_index: 1,
       txt_content: "",
@@ -243,8 +245,12 @@ export default {
   watch: {
     $route() {
       const {
-        query: { doc_id = "", total = 0 }
+        query: { doc_id = "", total = 0, page }
       } = this.$route;
+      page &&
+        (() => {
+          this.preview_index = page;
+        })();
       this.doc_id = doc_id;
       this.total = +total;
       this.initData();

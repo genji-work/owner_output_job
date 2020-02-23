@@ -176,14 +176,16 @@ export default {
     };
   },
   watch: {
-    value() {
-      const { countryList, languages } = this._.get(
-        this,
-        "$store.state.dic",
-        {}
-      );
-      this.countryList = countryList;
-      this.languages = languages;
+    value(val) {
+      if (val) {
+        const { countryList, languages } = this._.get(
+          this,
+          "$store.state.dic",
+          {}
+        );
+        this.countryList = countryList;
+        this.languages = languages;
+      }
     }
   }
 };

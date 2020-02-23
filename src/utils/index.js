@@ -108,3 +108,9 @@ export const viewGo = url => {
   dom.dispatchEvent(e);
   a.remove();
 };
+
+export const documentApprovalStatusMap = {
+  1: "审批中",
+  2: "审批通过",
+  3: "拒绝"
+};

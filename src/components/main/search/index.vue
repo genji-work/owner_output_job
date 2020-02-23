@@ -65,7 +65,7 @@ export default {
         language: this.language || "china",
         currentPage: 1
       });
-      
+
       this.$router.push(newPath);
     }
   },

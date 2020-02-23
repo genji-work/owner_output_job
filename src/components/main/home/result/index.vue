@@ -86,33 +86,60 @@
               ></i>
             </div>
             <div class="page-op">
-              <span v-show="!keyword">在新标签页中查看所有页面</span>
               <span v-show="keyword" @click="dropResult('result', item)"
                 >查看提及<em>"</em><em class="keyword">{{ keyword }}</em
                 ><em>"</em>的全部{{ item.pages.length }}个页面</span
               >
             </div>
           </div>
-          <div class="page-info-con" v-show="item.showInfo">
-            <div
-              class="page-info-item"
-              v-for="(child, idx) in item.documentTotalPage > 8
-                ? new Array(8)
-                : new Array(item.documentTotalPage)"
+          <swiper
+            class="swiper-container"
+            :id="`swiper_${item.id}`"
+            v-show="item.showInfo"
+            :options="swiperOption"
+          >
+            <swiper-slide
+              class="page-info-con swiper-slide"
+              v-for="(children, idx) in new Array(
+                Math.ceil(item.documentTotalPage / 8)
+              )"
               :key="idx"
             >
-              <div class="page-info-item-con">
-                <img
-                  :src="
-                    `/api/file/preview/${item.country}/${item.id}/thumb_p${idx +
-                      1}.png`
-                  "
-                  alt=""
-                />
+              <div
+                v-show="item.documentTotalPage > 8"
+                class="swiper-button-prev"
+              ></div>
+              <!--左箭头。如果放置在swiper-container外面，需要自定义样式。-->
+              <div
+                v-show="item.documentTotalPage > 8"
+                class="swiper-button-next"
+              ></div>
+              <!--右箭头。如果放置在swiper-container外面，需要自定义样式。-->
+              <div class="page-info-box">
+                <div
+                  class=" page-info-item"
+                  v-for="(child, idx1) in item.documentTotalPage - idx * 8 >= 8
+                    ? new Array(8)
+                    : new Array(item.documentTotalPage - idx * 8)"
+                  :key="idx1"
+                  @click="goPreview(item, idx * 8 + idx1 + 1)"
+                >
+                  <div class="page-info-item-con">
+                    <img
+                      :src="
+                        `/api/file/preview/${item.country}/${
+                          item.id
+                        }/thumb_p${idx * 8 + idx1 + 1}.png`
+                      "
+                      alt=""
+                    />
+                  </div>
+                  <div class="page-info-num">P.{{ idx * 8 + idx1 + 1 }}</div>
+                </div>
               </div>
-              <div class="page-info-num">P.{{ idx + 1 }}</div>
-            </div>
-          </div>
+            </swiper-slide>
+          </swiper>
+
           <div class="page-result-con" v-show="item.showResult">
             <div
               class="page-result-item"
@@ -120,7 +147,10 @@
               :key="index"
             >
               <div class="page-result-con-left">
-                <div class="page-result-img">
+                <div
+                  class="page-result-img"
+                  @click="goPreview(item, child.page)"
+                >
                   <img
                     :src="
                       `/api/file/preview/${item.country}/${item.id}/thumb_p${child.page}.png`
@@ -155,7 +185,13 @@ import { collectService, searchPdfService } from "../../../../services/api";
 import { category_map } from "../../../../router/intercept";
 import { changeFilterGo, orderFormart, viewGo } from "../../../../utils";
 import { getFilter } from "../../../../utils";
+import { swiper, swiperSlide } from "vue-awesome-swiper";
+
 export default {
+  components: {
+    swiper,
+    swiperSlide
+  },
   async created() {
     this.search();
   },
@@ -244,13 +280,15 @@ export default {
       this.$router.push(newPath);
       this.$("#result_main").animate({ scrollTop: 0 });
     },
-    goPreview(item) {
-      const { id, documentTotalPage, country, fileType } = item;
+    goPreview(item, page) {
+      const { id, documentTotalPage, country } = item;
       const {
         query: { q = "" }
       } = this.$route;
       this.$router.push(
-        `/main/info?q=${q}&doc_id=${id}&total=${documentTotalPage}&country=${country}&file_type=${fileType}`
+        `/main/info?q=${q}&doc_id=${id}&total=${documentTotalPage}&country=${country}${
+          page ? "&page=" + page : ""
+        }`
       );
     },
     async collect(item) {
@@ -267,13 +305,22 @@ export default {
   },
   data() {
     const { cityMap } = this._.get(this, "$store.state.dic", {});
+    const swiperOption = {
+      grabCursor: true,
+      watchOverflow: true,
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev"
+      }
+    };
     return {
       data: [],
       keyword: "",
       order: "",
       currentPage: 1,
       total: 0,
-      cityMap
+      cityMap,
+      swiperOption
     };
   },
   watch: {
