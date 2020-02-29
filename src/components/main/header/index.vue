@@ -3,7 +3,7 @@
     <ownerUpload v-if="upload_model" v-model="upload_model" @close="close" />
     <div class="title-con">
       <div class="icon-con" @click="backHome">
-        <i :class="`logo logo${idx}`" />
+        <div class="home-logo"></div>
         <span>{{ title }}</span>
       </div>
       <div class="op-con">

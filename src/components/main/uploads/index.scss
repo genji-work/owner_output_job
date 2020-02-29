@@ -15,12 +15,12 @@
       display: inline-block;
       margin-right: 10px;
       width: 4px;
-      height: 25px;
+      height: 20px;
       background-color: #0855A7;
     }
 
     & > span {
-      font-size: 24px;
+      font-size: 20px;
       color: #0855A7;
     }
   }
@@ -30,7 +30,7 @@
 
     /deep/ .upload-table-head th {
       background-color: #F7F7F7;
-      font-size: 16px;
+      font-size: 14px;
       color: #9B9B9B;
       letter-spacing: 0.11px;
     }
@@ -48,7 +48,7 @@
 
       & > i {
         margin-right: 20px;
-        font-size: 16px;
+        font-size: 14px;
         cursor: pointer;
 
         &:hover {
@@ -68,7 +68,7 @@
 
     & > span {
       margin-right: 20px;
-      font-size: 16px;
+      font-size: 14px;
       color: #9B9B9B;
       letter-spacing: 0.11px;
       text-align: center;

@@ -65,11 +65,6 @@ export default {
   data() {
     const email_validate = (rule, value, callback) => {
       if (value) {
-        const { password = "" } = this.get_users(value);
-        password &&
-          (() => {
-            this.rule_form.password = password;
-          })();
         callback();
       } else {
         callback(new Error("请输入用户名"));

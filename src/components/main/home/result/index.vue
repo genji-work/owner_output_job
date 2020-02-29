@@ -95,46 +95,47 @@
           <swiper
             class="swiper-container"
             :id="`swiper_${item.id}`"
-            v-show="item.showInfo"
-            :options="swiperOption"
+            v-if="item.showInfo"
+            :options="item.swiperOption"
           >
             <swiper-slide
               class="page-info-con swiper-slide"
               v-for="(children, idx) in new Array(
-                Math.ceil(item.documentTotalPage / 8)
+                Math.ceil(item.documentTotalPage / 12)
               )"
               :key="idx"
             >
               <div
-                v-show="item.documentTotalPage > 8"
+                v-show="item.documentTotalPage > 12"
                 class="swiper-button-prev"
               ></div>
               <!--左箭头。如果放置在swiper-container外面，需要自定义样式。-->
               <div
-                v-show="item.documentTotalPage > 8"
+                v-show="item.documentTotalPage > 12"
                 class="swiper-button-next"
               ></div>
               <!--右箭头。如果放置在swiper-container外面，需要自定义样式。-->
               <div class="page-info-box">
                 <div
                   class=" page-info-item"
-                  v-for="(child, idx1) in item.documentTotalPage - idx * 8 >= 8
-                    ? new Array(8)
-                    : new Array(item.documentTotalPage - idx * 8)"
+                  v-for="(child, idx1) in item.documentTotalPage - idx * 12 >=
+                  12
+                    ? new Array(12)
+                    : new Array(item.documentTotalPage - idx * 12)"
                   :key="idx1"
-                  @click="goPreview(item, idx * 8 + idx1 + 1)"
+                  @click="goPreview(item, idx * 12 + idx1 + 1)"
                 >
                   <div class="page-info-item-con">
                     <img
                       :src="
                         `/api/file/preview/${item.country}/${
                           item.id
-                        }/thumb_p${idx * 8 + idx1 + 1}.png`
+                        }/thumb_p${idx * 12 + idx1 + 1}.png`
                       "
                       alt=""
                     />
                   </div>
-                  <div class="page-info-num">P.{{ idx * 8 + idx1 + 1 }}</div>
+                  <div class="page-info-num">P.{{ idx * 12 + idx1 + 1 }}</div>
                 </div>
               </div>
             </swiper-slide>
@@ -221,6 +222,7 @@ export default {
           data.map(item => {
             item.showInfo = false;
             item.showResult = false;
+            item.swiperOption = this._.cloneDeep(this.swiperOption);
             return item;
           }) || [];
       }

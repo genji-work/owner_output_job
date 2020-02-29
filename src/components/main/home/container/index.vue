@@ -33,7 +33,7 @@
       </div>
       <div class="half">
         <div class="title">
-          <i class="visit"></i>
+          <i class="el-icon-s-data"></i>
           <span>访问排名</span>
         </div>
         <div class="con">

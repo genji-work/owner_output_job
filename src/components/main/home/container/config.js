@@ -1,5 +1,32 @@
 import * as echarts from "echarts";
 
+export const colors = [
+  "#F93A4A",
+  "#0ABC80",
+  "#1677FF",
+  "#ff6565",
+  "#00B7F4",
+  "#4876FF",
+  "#ff8f1f",
+  "#00BFD0",
+  "#5260FF",
+  "#FF6010",
+  "#c19030",
+  "#454955",
+  "#FFEEEF",
+  "#FFEEEE",
+  "#FFECE3",
+  "#FFEFDF",
+  "#FFF3D9",
+  "#D4FFF1",
+  "#DDFCFF",
+  "#E0F7FF",
+  "#E7F1FF",
+  "#EBEFFF",
+  "#EDEEFF",
+  "#F1F1F1"
+];
+
 export const WeekMap = {
   Sun: "周日",
   Mon: "周一",
@@ -88,17 +115,17 @@ export const bar_config = {
       type: "bar",
       itemStyle: {
         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-          { offset: 0, color: "#188df0" },
+          { offset: 0, color: "#83bff6" },
           { offset: 0.5, color: "#188df0" },
-          { offset: 1, color: "#83bff6" }
+          { offset: 1, color: "#188df033" }
         ])
       },
       emphasis: {
         itemStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: "#2378f7" },
+            { offset: 0, color: "#83bff6" },
             { offset: 0.7, color: "#2378f7" },
-            { offset: 1, color: "#83bff6" }
+            { offset: 1, color: "#2378f7" }
           ])
         }
       },
@@ -106,6 +133,8 @@ export const bar_config = {
     }
   ]
 };
+
+let i = 0;
 
 export const pie_config = {
   tooltip: {
@@ -137,6 +166,19 @@ export const pie_config = {
       labelLine: {
         normal: {
           show: false
+        }
+      },
+      itemStyle: {
+        normal: {
+          color: function() {
+            return colors[i++];
+          },
+          label: {
+            show: false
+          },
+          labelLine: {
+            show: false
+          }
         }
       },
       data: []

@@ -14,12 +14,12 @@
       display: inline-block;
       margin-right: 10px;
       width: 4px;
-      height: 25px;
+      height: 20px;
       background-color: #0855A7;
     }
 
     & > span {
-      font-size: 24px;
+      font-size: 20px;
       color: #0855A7;
     }
   }
@@ -36,16 +36,17 @@
       }
 
       .label {
-        width: 90px;
-        font-size: 20px;
+        width: 80px;
+        font-size: 16px;
         color: #9B9B9B;
         letter-spacing: 0.13px;
         line-height: 28px;
-        margin-right: 50px;
+        text-align: right;
+        margin-right: 20px;
       }
 
       .item-con {
-        font-size: 20px;
+        font-size: 16px;
         color: #333333;
         letter-spacing: 0.13px;
         line-height: 28px;

@@ -1,6 +1,6 @@
 .update-password {
   .title {
-    font-size: 24px;
+    font-size: 20px;
     color: #0855A7;
     text-align: center;
   }
@@ -14,7 +14,7 @@
 
     /deep/ .el-form-item__label {
       width: 120px;
-      font-size: 16px;
+      font-size: 14px;
       color: #151515;
       letter-spacing: 0.13px;
       text-align: right;
@@ -56,16 +56,16 @@
       border: 1px solid #0855A7;
       box-shadow: 0 8px 16px 0 rgba(0,128,203,0.20);
       border-radius: 30px;
-      height: 50px;
+      height: 40px;
       color: #fff;
-      width: 230px;
-      font-size: 20px;
+      width: 160px;
+      font-size: 14px;
       text-align: center;
       margin-bottom: 20px;
 
       &:nth-child(1) {
         background-color: #fff;
-        font-size: 20px;
+        font-size: 14px;
         color: #0855A7;
         margin-right: 40px;
       }
