@@ -87,7 +87,13 @@
 </template>
 
 <script>
-import { bar_config, pie_config, line_config, WeekMap } from "./config";
+import {
+  bar_config,
+  pie_config,
+  line_config,
+  WeekMap,
+  initColorIndex
+} from "./config";
 import {
   queryUserHotService,
   queryKeywordHotService,
@@ -190,6 +196,7 @@ export default {
       echarts.init(bar).setOption(bar_config);
     },
     async init_pie() {
+      initColorIndex();
       const { pie } = this.$refs;
       const echarts = this.echarts;
       const { cityMap = {} } = this._.get(this, "$store.state.dic", {});

@@ -14,16 +14,16 @@ export const colors = [
   "#c19030",
   "#454955",
   "#FFEEEF",
-  "#FFEEEE",
-  "#FFECE3",
   "#FFEFDF",
-  "#FFF3D9",
   "#D4FFF1",
-  "#DDFCFF",
   "#E0F7FF",
-  "#E7F1FF",
   "#EBEFFF",
+  "#FFEEEE",
+  "#FFF3D9",
+  "#DDFCFF",
+  "#E7F1FF",
   "#EDEEFF",
+  "#FFECE3",
   "#F1F1F1"
 ];
 
@@ -134,7 +134,11 @@ export const bar_config = {
   ]
 };
 
-let i = 0;
+let colorIndex = 0;
+
+export function initColorIndex() {
+  colorIndex = 0;
+}
 
 export const pie_config = {
   tooltip: {
@@ -171,7 +175,7 @@ export const pie_config = {
       itemStyle: {
         normal: {
           color: function() {
-            return colors[i++];
+            return colors[colorIndex++];
           },
           label: {
             show: false
