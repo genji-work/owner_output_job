@@ -167,7 +167,7 @@
         </div>
       </div>
     </div>
-    <div class="pagnation">
+    <div class="pagnation" v-show="total">
       <el-pagination
         background
         :current-page="currentPage"
@@ -219,12 +219,14 @@ export default {
       } = res;
       if (code === "200") {
         this.data =
-          data.map(item => {
-            item.showInfo = false;
-            item.showResult = false;
-            item.swiperOption = this._.cloneDeep(this.swiperOption);
-            return item;
-          }) || [];
+          data && data.length
+            ? data.map(item => {
+                item.showInfo = false;
+                item.showResult = false;
+                item.swiperOption = this._.cloneDeep(this.swiperOption);
+                return item;
+              })
+            : [];
       }
       this.total = total;
     },

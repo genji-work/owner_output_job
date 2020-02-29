@@ -127,7 +127,7 @@ export default {
       if (res_year.code === "200") {
         this.date_count = 0;
         const { data } = res_year;
-        this.formartYear(data);
+        this.formartYear(data || {});
       }
       const res_country = await docCountryService({
         category: category_map[q] || "",
@@ -138,7 +138,7 @@ export default {
       if (res_country.code === "200") {
         this.country_count = 0;
         const { data } = res_country;
-        this.formartCountry(data);
+        this.formartCountry(data || {});
       }
     },
     formartYear(data) {
